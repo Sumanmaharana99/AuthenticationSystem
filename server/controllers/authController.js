@@ -2,6 +2,7 @@ import express from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import transporter from '../config/nodemailer.js';
 
 export const register = async (req, res) => {
     const {name,email,password} = req.body;
@@ -25,6 +26,18 @@ export const register = async (req, res) => {
             sameSite : process.env.NODE_ENV === 'production' ? 'None' : 'Strict',
             maxAge: 7*24*60*60*1000
         });
+
+        //Sending welcome email 
+        const mailOptions = {
+            from : process.env.SENDERS_EMAIL,
+            to : email,
+            subject : "Welcome to Our Authify",
+            text : `Welcome to Authify, your account has been created successfully with Email ID : ${email} . Please keep your credentials safe.`
+
+        }
+        // Send the email
+        await transporter.sendMail(mailOptions);
+
         res.status(201).json({success: true, msg: "User registered successfully", user: {
             id: user._id,
             name: user.name,
