@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
 
     name:{type:String, required:true},
     email:{type:String, required:true, unique:true},
-    password:{typeString, required:true},
+    password:{type:String, required:true},
     verifyOtp:{type:String, default:""},
     verifyOtpExpiredAt :{type:Number,default:0},
     isVerified:{type:Boolean, default:false},
@@ -12,5 +12,5 @@ const userSchema = new mongoose.Schema({
     resetOtpExpiredAt:{type:Number, default:0},
 });
 
-const userModel =  mongoose.model.user || mongoose.model("user",userSchema);
+const userModel =  mongoose.models.user || mongoose.model("user",userSchema);
 export default userModel;   
