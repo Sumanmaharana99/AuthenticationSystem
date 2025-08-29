@@ -96,8 +96,8 @@ export const logout = async (req,res)=>{
 //Email verificaton controller - Send verification OTP to users email
 export const sendVerifyOtp = async(req,res)=>{
     try {
-        const {userid} = req.body;
-        const user = await User.findById(userid);
+        const {userId} = req.body;
+        const user = await User.findById(userId);
         if(!user){
             return res.status(404).json({success: false, msg: "User not found ! Please register first"});
         }
@@ -123,7 +123,7 @@ export const sendVerifyOtp = async(req,res)=>{
         console.log(error.message);
     }
 }
-
+//After user inputs OTP, verify the email
 export const verifyEmail = async(req,res)=>{
     const {userId, otp} = req.body;
 
@@ -156,5 +156,6 @@ export default {
     register,
     login,
     logout,
-    sendVerifyOtp
+    sendVerifyOtp,
+    verifyEmail
 };
