@@ -50,17 +50,20 @@ export const register = async (req, res) => {
 
 export const login = async(req,res)=>{
     const {email,password} = req.body;
+      console.log("Login body received:", req.body);
+console.log("Login attempt with email:", email);
+    console.log("Login attempt with email:", email);
     if(!email || !password){
         return res.status(400).json({success:false, msg :"Please fill the required fields"});
     }
     try {
         const user = await User.findOne({email : email});
         if(!user){
-            return res.status(400).json({success: false, msg: "Invalid Creadintials"});
+            return res.status(400).json({success: false, msg: "Invalid Credientials"});
         }
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if(!isPasswordMatch){
-            return res.status(400).json({success: false, msg: "Invalid Creadintials"});
+            return res.json({success: false, msg: "Invalid Creadintials"});
         }
         const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn: '7d'});
         res.cookie('token', token, {
